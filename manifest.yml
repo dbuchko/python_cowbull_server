@@ -1,0 +1,21 @@
+---
+applications:
+- name: python-demo-server
+  memory: 1G
+  instances: 1
+  host: python-demo-server
+  path: .
+  buildpacks:
+    - python_buildpack
+  command: gunicorn -b 0.0.0.0:8080 -w 4 app:app
+  env:
+    LOGGING_FORMAT: "%(asctime)s %(levelname)s: %(message)s"
+    LOGGING_LEVEL: 10
+    TEST_VALUE: Hello David!
+    REDIS_HOST: u249f281b494.redis.cache.windows.net
+    REDIS_PORT: 6379
+    REDIS_DB: 0
+    FLASK_HOST: localhost
+    FLASK_PORT: 8080
+    FLASK_DEBUG: False
+    GAME_VERSION: v1

@@ -32,7 +32,7 @@ server via env vars:
 * REDIS_HOST : Defines the fqdn name of the redis host (e.g. redis)
 * REDIS_PORT : Defines the port number redis is listening on (e.g. 6379)
 * REDIS_DB : Defines the database number (e.g. 0)
-* REDIS_USEAUTH : *Not Currently Used* For future use to tell the game 
+* REDIS_USEAUTH : *Not Currently Used* For future use to tell the game
 server to use redis authentication.
 
 Any redis server will do and options include:
@@ -71,7 +71,7 @@ docker stop cowbull
 docker rm cowbull
 ```
 
-To run the game using local Kubernetes (minikube) *NOTE* This uses 
+To run the game using local Kubernetes (minikube) *NOTE* This uses
 the standard Docker image for the game server (dsanderscan/cowbull_v5):
 ```
 minikube start
@@ -97,18 +97,26 @@ kubectl delete -f vendor/kubeconfig/configured-cowbull.yml
 kubectl delete configmap cowbull-config
 ```
 
+To run the game on Pivotal Cloud Foundry:
+* Run the `build-pcf.sh` shell script to download the vendor app dependencies
+* Provision a Redis service in your org and space, eg: `cf create-service azure-rediscache basicc0 cb-redis`
+* Create a service key for the Redis service, eg: `cf create-service-key cb-redis cb-svckey`
+* Fetch the Redis host and port from the service key, eg: `cf service-key cb-redis cb-svckey`
+* Edit the `manifest.yml`, changing the `REDIS_HOST` parameter to match the `hostname` output of the service key.
+* Run `cf push` from the project root directory.
+
 ### Requests
 Make a request by issuing GET or POST methods to:
 * `curl http://FLASK_HOST:FLASK_PORT/v0_1/game`
 
-For added benefit, install [jq](https://stedolan.github.io/jq/) to be able 
+For added benefit, install [jq](https://stedolan.github.io/jq/) to be able
 to parse the JSON returned by the request:
 * `curl -s <-X {method}> http://FLASK_HOST:FLASK_PORT/v0_1/game | jq`
 
-**_Notes_**: 
+**_Notes_**:
 1. If using Kubernetes:
   * Use your minikube node address (typically 192.168.99.100 and found
-by executing `kubectl describe nodes minikube | grep Addresses | grep -v grep`) 
+by executing `kubectl describe nodes minikube | grep Addresses | grep -v grep`)
 for FLASK_HOST
   * Use the port number found above (`kubectl get svc cowbull-svc`)
 2. If using Docker:
@@ -247,4 +255,3 @@ an array of Digits (integers between 0 and 9) as raw JSON data.
     "status": 400
   }
   ```
-  
