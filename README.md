@@ -99,10 +99,7 @@ kubectl delete configmap cowbull-config
 
 To run the game on Pivotal Cloud Foundry:
 * Run the `build-pcf.sh` shell script to download the vendor app dependencies
-* Provision a Redis service in your org and space, eg: `cf create-service azure-rediscache basicc0 cb-redis`
-* Create a service key for the Redis service, eg: `cf create-service-key cb-redis cb-svckey`
-* Fetch the Redis host and port from the service key, eg: `cf service-key cb-redis cb-svckey`
-* Edit the `manifest.yml`, changing the `REDIS_HOST` parameter to match the `hostname` output of the service key.
+* Provision a Redis service in your org and space, eg: `cf create-service azure-rediscache basicc0 cb-redis`.  **Note** If you change the name of the service, you will need to modify the service name in the `manifest.yml` to match.
 * Run `cf push` from the project root directory.
 
 ### Requests
