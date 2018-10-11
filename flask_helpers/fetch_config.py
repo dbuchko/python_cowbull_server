@@ -13,6 +13,7 @@ def fetch_config(osvar=None):
         "default": True,
         "redis_host": "redis",
         "redis_port": 6379,
+        "redis_password": "",
         "redis_db": 0
     }
 

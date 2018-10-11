@@ -3,11 +3,14 @@ applications:
 - name: python-demo-server
   memory: 1G
   instances: 1
-  host: python-demo-server
+  routes:
+  - route: python-demo-server.apps.lcl.pcflabs.io
   path: .
   buildpacks:
     - python_buildpack
-  command: gunicorn -b 0.0.0.0:8080 -w 4 app:app
+  command: gunicorn -b 0.0.0.0:8080 -w 1 app:app
+  services:
+   - cb-redis
   env:
     LOGGING_FORMAT: "%(asctime)s %(levelname)s: %(message)s"
     LOGGING_LEVEL: 10
